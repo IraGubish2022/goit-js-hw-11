@@ -1,7 +1,7 @@
 import { PixabayApi } from './js/fetch';
 import { refs } from './js/refs';
 import { createElements } from './js/createElements';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { Notify } from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
@@ -112,6 +112,7 @@ function clearPage() {
   refs.gallery.innerHTML = '';
   refs.loadMoreBtn.classList.add('.is-hidden');
 }
+
 const lightbox = new SimpleLightbox('.gallery a');
 
 function scrollPage() {

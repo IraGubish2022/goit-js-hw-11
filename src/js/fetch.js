@@ -7,13 +7,13 @@ export class PixabayApi {
   #page = 1;
   #query = '';
   #allTotalPages = 0;
-  #perPage = 30;
+  #perPage = 40;
   #params = {
     params: {
       image_type: 'photo',
       orientation: 'horizontal',
       safesearch: true,
-      per_page: 30,
+      per_page: 40,
     },
   };
 
@@ -21,8 +21,12 @@ export class PixabayApi {
     const url = `/?key=32003539-849ebfc75c29bb32e3b9621c3=${
       this.#query
     }&page=${this.#page}`;
-    const { data } = await axios.get(url, this.#params);
-    return data;
+    try {
+      const { data } = await axios.get(url, this.#params);
+      return data;
+    } catch (error) {
+      console.log('ERROR: ' + error);
+    }
   }
 
   set query(newQuery) {
