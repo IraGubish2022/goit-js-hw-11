@@ -37,9 +37,13 @@ const callback = async function (entries, observer) {
           photoLink ();
         }
 
-        if (counter + 40 >= totalHits) {
+        if (counter + 40 >= hits) {
           Notify.failure('Stop!');
         }
+
+        //if (counter + 40 >= totalHits) {
+         // Notify.failure('Stop!');
+       // }
 
         lightbox.refresh();
         scrollPage();
@@ -69,7 +73,8 @@ async function searchPhotos(event) {
   clearPage();
 
   try {
-    const { hits, total, totalHits } = await pixabay.getPhotos();
+    //const { hits, total, totalHits } = await pixabay.getPhotos();
+    const { hits, total } = await pixabay.getPhotos();
     if (hits.length === 0) {
       Notify.info(
         'Sorry, there are no images matching your search query. Please try again.'
@@ -83,7 +88,8 @@ async function searchPhotos(event) {
     //observer.observe(target);
     photoLink ();
 
-    pixabay.calculateTotalPages(totalHits);
+    //pixabay.calculateTotalPages(totalHits);
+    pixabay.calculateTotalPages(hits);
 
     Notify.success(`Hooray! We found ${total} images.`);
     lightbox.refresh();

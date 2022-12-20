@@ -25,7 +25,7 @@ export class PixabayApi {
       const { data } = await axios.get(url, this.#params);
       return data;
     } catch (error) {
-      console.log('ERROR: ' + error);
+      throw new Error(error.message);
     }
   }
 
