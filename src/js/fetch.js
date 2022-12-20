@@ -18,7 +18,7 @@ export class PixabayApi {
   };
 
   async getPhotos() {
-    const url = `/?key=32003539-849ebfc75c29bb32e3b9621c3=${
+    const url = `/?key=32003539-849ebfc75c29bb32e3b9621c3&q=${
       this.#query
     }&page=${this.#page}`;
     try {

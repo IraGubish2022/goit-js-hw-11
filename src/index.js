@@ -8,26 +8,37 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 const pixabay = new PixabayApi();
 
 const options = {
-  root: null,
-  rootMargin: '150px',
   threshold: 1.0,
 };
+
+let counter = 0;
+
+function photoLink () {
+  const target = document.querySelector('.photo-link:last-child');
+  observer.observe(target);
+}
+
 const callback = async function (entries, observer) {
   entries.forEach(async entry => {
-    if (entry.isIntersecting && entry.intersectionRect.bottom > 550) {
-      console.log(entry.isIntersecting);
+    if (entry.isIntersecting) {
       pixabay.incrementPage();
       observer.unobserve(entry.target);
 
       try {
         const { hits } = await pixabay.getPhotos();
+        counter += hits.length;
         const markup = createElements(hits);
         refs.gallery.insertAdjacentHTML('beforeend', markup);
 
         if (pixabay.isShowLoadMore) {
           console.log(pixabay.isShowLoadMore);
-          const target = document.querySelector('.photo-link:last-child');
-          observer.observe(target);
+         // const target = document.querySelector('.photo-link:last-child');
+          //observer.observe(target);
+          photoLink ();
+        }
+
+        if (counter + 40 >= totalHits) {
+          Notify.failure('Stop!');
         }
 
         lightbox.refresh();
@@ -53,6 +64,7 @@ async function searchPhotos(event) {
     Notify.failure('Enter data to search, please!');
     return;
   }
+  counter = 0;
   pixabay.query = searchQuery;
   clearPage();
 
@@ -66,9 +78,10 @@ async function searchPhotos(event) {
     }
     const markup = createElements(hits);
     refs.gallery.insertAdjacentHTML('beforeend', markup);
-    const target = document.querySelector('.photo-link:last-child');
-    console.log(target);
-    observer.observe(target);
+    //const target = document.querySelector('.photo-link:last-child');
+    //console.log(target);
+    //observer.observe(target);
+    photoLink ();
 
     pixabay.calculateTotalPages(totalHits);
 
@@ -77,8 +90,9 @@ async function searchPhotos(event) {
 
     if (pixabay.isShowLoadMore) {
       // refs.loadMoreBtn.classList.remove('is-hidden');
-      const target = document.querySelector('.photo-link:last-child');
-      observer.observe(target);
+      //const target = document.querySelector('.photo-link:last-child');
+      //observer.observe(target);
+      photoLink ();
     }
     scrollPage();
   } catch (error) {
